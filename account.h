@@ -9,12 +9,14 @@ public:
 	void setPassword(string pass);
 	void setName(string n);
 	void setPhone(string digits);
+	bool checkTries();
 	//define display functions to display the information of the accounts to users.
 	void displayUsername();
 	void displayName();
 	void displayPhone();
 	//Variables that will store account information.
 	string username, password, name, phone;
+	int tries;
 };
 
 void account::setUsername(string user) {
@@ -43,4 +45,11 @@ void account::displayName() {
 
 void account::displayPhone() {
 	cout << "Phone number: " << phone;
+}
+
+bool account::checkTries() {
+	if(tries < 3)
+		return TRUE;
+	else
+		return FALSE;
 }
