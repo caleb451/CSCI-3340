@@ -1,0 +1,3 @@
+Item---Brand---QTY---Shelf Life(DAYS LEFT)---Price
+Pickles Vlassic 25 4 4.99
+Pickles Dill-Pickles 25 32 3.49

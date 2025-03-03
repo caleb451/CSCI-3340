@@ -26,7 +26,7 @@ void end(){
     char answer;
     cin >> answer;
     if (answer == 'Y' || answer == 'y'){
-       cout << "Goodbye!";
+       cout << "Program terminated." << endl;
         exit(0);
     }
     else
