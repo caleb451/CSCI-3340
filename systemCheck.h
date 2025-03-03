@@ -2,10 +2,26 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 using namespace std;
 
+//Function prototypes
+void(goBack());
+void(end());
+char start();
 
-void quit(){
+//Function definitions
+char start(){
+    char answer;
+    system("cls");
+    cout << "------------------------" << " [STORE NAME] " << "------------------------" << endl;
+    cout << setw(20) << left << "1. Login" << endl;
+    cout << setw(20) << "2. View Inventory" << endl;
+    cout << setw(20)<< right << "Select one of the options above:" << endl;
+    cin >> answer;
+    return answer;
+}
+void end(){
     cout << "Do you want to quit? (Y/N): ";
     char answer;
     cin >> answer;
@@ -13,6 +29,8 @@ void quit(){
        cout << "Goodbye!";
         exit(0);
     }
+    else
+        goBack();
 }
 void goBack(){
     cout << "Do you want to go back? (Y/N): ";
@@ -21,4 +39,6 @@ void goBack(){
     if (answer == 'Y' || answer == 'y'){
         return;
     }
+    else
+        end();
 }

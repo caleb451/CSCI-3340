@@ -13,14 +13,15 @@ void login() {
 	int account;
 	int tries = 0;
 	do{
+		system("cls");
+        cout << "Login Page" << endl;
+        cout << "------------------------" << endl;
 		if (i == empSize) {
-			system("cls");
 			tries ++;
 			cout << "\nUsername: ";
 			cin >> username;
 			cout << "Password: ";
 			cin >> password;
-			cout << "\nUsername does not exist. Please try another.\n";
 			cout << "Press Enter to continue ...";
 			cin.sync();
 			cin.ignore();

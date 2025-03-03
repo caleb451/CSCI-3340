@@ -18,6 +18,7 @@ using namespace std;
 int main(){
     Inventory inventory;
     char answer;
+    bool quit = false;
     // (void) system("cls");
     // for (int i = 0; i < 3; i++){
     //     cout << "Loading..";
@@ -27,30 +28,24 @@ int main(){
     //     (void) system("cls");
     // }
     
-    
-        cout << "------------------------" << " [STORE NAME] " << "------------------------" << endl;
-        cout << setw(20) << left << "1. Login" << endl;
-        cout << setw(20) << "2. View Inventory" << endl;
-        cout << setw(20)<< right << "Select one of the options above:" << endl;
-        cin >> answer;
-    switch(answer){
-        case '1':
-            login();
-            break;
-        case '2':
-            system("cls");
-            cout << "View Inventory" << endl;
-            cout << "------------------------" << endl;
-            inventory.display();
-            break;
-        default:
-            cout << "Invalid input. Please try again." << endl;
-            quit();
-            break;
-    }
-
-
-
-
-    //login();
+    do{
+        answer = start();
+        switch(answer){
+            case '1':
+                login();
+                break;
+            case '2':
+                system("cls");
+                cout << "View Inventory" << endl;
+                cout << "------------------------" << endl;
+                inventory.display();
+                goBack();
+                break;
+            default:
+                cout << "Invalid input. Please try again." << endl;
+                end();
+                break;
+        }
+    }while(quit != true);
+    return 0;
 }
