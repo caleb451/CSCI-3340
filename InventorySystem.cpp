@@ -5,8 +5,8 @@ Program: System in charge of handling the storage of items in the inventory and 
 
 /*
 To Be Implemented:
-"Find Position" function to find where a new item should be added.
-Function to insert new item at said position
+general "add" function
+general "delete" function
 */
 
 #include <iostream>
@@ -46,7 +46,7 @@ public:
         Item* newItem = new Item();     // creates a newItem variable holding the adress of the new item.
 
         // Assigning data
-        newItem->name = s;
+        newItem->name = n;
         newItem->ID = id;
         newItem->price = p;
         newItem->stock = s;
@@ -63,7 +63,7 @@ public:
         Item* newItem = new Item();     // creates a newItem variable holding the adress of the new item.
 
         // Assigning data
-        newItem->name = s;
+        newItem->name = n;
         newItem->ID = id;
         newItem->price = p;
         newItem->stock = s;
@@ -146,6 +146,7 @@ public:
             cout << "Item Name: " << temp->name << "\nItem ID: " << temp->ID <<
                 "\nItem Price: $" << temp->price << "\nItem Stock: " << temp->stock <<
                 "\nItem Department: " << temp->department << " in Aisle: " << temp->aisle << endl << endl;
+
             temp = temp->next;  // Move to next item
         }
 
@@ -165,8 +166,6 @@ int main()
     // Adding items to the list
     inventory.insertAtBeginning("Carrots", 0001, 10.00, 500, "Vegetables", "A1");
     inventory.insertAtEnd("Lettuce", 0002, 8.99, 450, "Vegetables", "A1");
-
-    // Names are not being displayed correctly.... Will fix that later.
 
     // Display list
     inventory.display();
