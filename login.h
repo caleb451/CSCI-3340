@@ -10,14 +10,22 @@ void login() {
 	vector<account> empAcc = addEmp();
 	string username, password;
 	int empSize = empAcc.size(), i;
-	int account, tries;
-
-	cout << "Username: ";
-	cin >> username;
-	cout << "Password: ";
-	cin >> password;
-	
-	while (true){
+	int account;
+	int tries = 0;
+	do{
+		if (i == empSize) {
+			system("cls");
+			tries ++;
+			cout << "\nUsername: ";
+			cin >> username;
+			cout << "Password: ";
+			cin >> password;
+			cout << "\nUsername does not exist. Please try another.\n";
+			cout << "Press Enter to continue ...";
+			cin.sync();
+			cin.ignore();
+			cin.get();
+		}
 		for (i = 0; i < empSize; i++) {
 			if (empAcc[i].username == username) {
 				tries = 0;
@@ -29,9 +37,9 @@ void login() {
 					}
 					else {
 						cout << "Password incorrect.\n\n";
-						tries += 1;
+						tries ++;
 						cout << "Username: " << username;
-						cout << "/nPassword: ";
+						cout << "\nPassword: ";
 						cin >> password;
 					}
 				}
@@ -42,14 +50,5 @@ void login() {
 					break;
 			}
 		}
-		if (i == empSize) {
-			cout << "\nUsername does not exist. Please try another.\n";
-			cout << "\nUsername: ";
-			cin >> username;
-			cout << "Password: ";
-			cin >> password;
-		}
-		else
-			break;
-	}
+	}while (tries < 3);{ cout << "Please try again later";}
 }
