@@ -7,6 +7,8 @@ what we will use to build off of
 #include <string>
 #include <windows.h>
 #include <iomanip>
+#include "systemCheck.h"
+#include "InventorySystem.h"
 #include "login.h"
 #include "addEmp.h"
 #include "account.h"
@@ -14,6 +16,7 @@ what we will use to build off of
 using namespace std;
 
 int main(){
+    Inventory inventory;
     char answer;
     // (void) system("cls");
     // for (int i = 0; i < 3; i++){
@@ -24,13 +27,27 @@ int main(){
     //     (void) system("cls");
     // }
     
-    cout << "------------------------" << " [STORE NAME] " << "------------------------" << endl;
-    cout << setw(20) << left << "1. Login" << endl;
-    cout << setw(20) << "2. View Inventory" << endl;
-    cout << setw(20)<< right << "Select one of the options above:" << endl;
-    cin >> answer;
-    if (answer == '1')
-        login();
+    
+        cout << "------------------------" << " [STORE NAME] " << "------------------------" << endl;
+        cout << setw(20) << left << "1. Login" << endl;
+        cout << setw(20) << "2. View Inventory" << endl;
+        cout << setw(20)<< right << "Select one of the options above:" << endl;
+        cin >> answer;
+    switch(answer){
+        case '1':
+            login();
+            break;
+        case '2':
+            system("cls");
+            cout << "View Inventory" << endl;
+            cout << "------------------------" << endl;
+            inventory.display();
+            break;
+        default:
+            cout << "Invalid input. Please try again." << endl;
+            quit();
+            break;
+    }
 
 
 

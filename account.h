@@ -47,9 +47,9 @@ void account::displayPhone() {
 	cout << "Phone number: " << phone;
 }
 
-bool account::checkTries() {
-	if(tries < 3)
-		return TRUE;
-	else
-		return FALSE;
-}
+// bool account::checkTries() {
+// 	if(tries < 3)
+// 		return TRUE;
+// 	else
+// 		return FALSE;
+// }
