@@ -47,7 +47,7 @@ account addinfo(string empInfo) {
 }
 
 vector<account> addAcc() {
-    ifstream empInfo("employeeInformation.txt");
+    ifstream empInfo("accountInformation.txt");
     while(true){
         if (!empInfo) {
             cout << "Error: file could not be opened." << endl;
