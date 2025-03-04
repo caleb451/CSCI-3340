@@ -4,52 +4,57 @@
 #include <vector>
 #include "addEmp.h"
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
 void login() {
-	vector<account> empAcc = addEmp();
+	vector<account> acc = addAcc();
 	string username, password;
-	int empSize = empAcc.size(), i;
+	int size = acc.size(), i;
 	int account;
 	int tries = 0;
+	cout << setw(5) << " " << "Login Page\n";
+	cout << setfill('-') << setw(25) << "-" << setfill(' ');
 	do{
-		system("cls");
-        cout << "Login Page" << endl;
-        cout << "------------------------" << endl;
-		if (i == empSize) {
-			tries ++;
-			cout << "\nUsername: ";
-			cin >> username;
-			cout << "Password: ";
-			cin >> password;
-			cout << "Press Enter to continue ...";
-			cin.sync();
-			cin.ignore();
-			cin.get();
-		}
-		for (i = 0; i < empSize; i++) {
-			if (empAcc[i].username == username) {
-				tries = 0;
-				while (tries < 3) {
-					if (empAcc[i].password == password) {
-						account = i;
-						cout << "Login success.\n" << "Welcome " << empAcc[i].name << "!\n";
+		cout << "\nUsername: ";
+		cin >> username;
+		cout << "Password: ";
+		cin >> password;
+		
+		for (i = 0; i < size; i++) {
+			if (acc[i].checkUser(username)) {
+				while (acc[i].checkTries()) {
+					if (acc[i].password == password) {
+					    account = i;
+						cout << "Login success.\n" << "Welcome " << acc[i].name << "!\n";
 						break;
 					}
 					else {
 						cout << "Password incorrect.\n\n";
-						tries ++;
-						cout << "Username: " << username;
+						acc[i].failedAtt();
+						cout << "Username: " << acc[i].username;
 						cout << "\nPassword: ";
 						cin >> password;
 					}
 				}
-				if (tries == 3) {
+				if (!acc[i].checkTries()) {
+				    system("cls");
 					cout << "Too many attempts, please try again later.\n";
+					break;
 				}
 				else
 					break;
 			}
 		}
-	}while (tries < 3);{ cout << "Please try again later";}
+		if (i == size){
+    		cout << "\nUsername does not exist. Please try another.\n";
+			cout << "Press Enter to continue ...";
+			cin.sync();
+			cin.ignore();
+			cin.get();
+			system ("cls");
+		}
+		else 
+		    break;
+	}while (true);
 }
