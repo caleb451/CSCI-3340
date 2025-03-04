@@ -1,5 +1,0 @@
-juanAbarca coolPassword123 Juan Abarca 956-123-4567
-user1 pass123 John Doe 123-456-7890
-admin456 securePass! Alice Smith 987-654-3210
-guestUser guest2025 Bob Johnson 555-123-9876
-user 1234 Caleb 123-456-7890
