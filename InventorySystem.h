@@ -5,7 +5,6 @@ Program: System in charge of handling the storage of items in the inventory and 
 
 /*
 To Be Implemented:
-general "add" function
 general "delete" function
 */
 
@@ -13,6 +12,7 @@ general "delete" function
 #include <string>
 
 using namespace std;
+
 
 
 // Structure for items in the list
@@ -27,7 +27,7 @@ struct Item {
     
     // Links to the next and previous items in the list
     Item* next;         // points to the next item in the list
-    Item* previous;     // points to the previous item in the list
+    Item* prev;     // points to the previous item in the list
 
 };
 
@@ -37,45 +37,23 @@ class Inventory {
     Item* headPtr;      // Points to the start of the list
     
 public:
-    Inventory() : headPtr(NULL) {} // Constructor to initialize the pointer to null
+    Inventory() : headPtr(NULL) {} // Constructor to initialize the head pointer to null
+
+
 
     // Functions 
 
     // Add a new item at the start of the list
-    void insertAtBeginning(string n, int id, double p, int s, string dept, string a) {
-        Item* newItem = new Item();     // creates a newItem variable holding the adress of the new item.
-
-        // Assigning data
-        newItem->name = n;
-        newItem->ID = id;
-        newItem->price = p;
-        newItem->stock = s;
-        newItem->department = dept;
-        newItem->aisle = a;
+    void insertAtBeginning(Item* target) {
 
         // Assigning pointers
-        newItem->next = headPtr;    // make this item point to the previous start
-        headPtr = newItem;          // Makes the start point to the new item
+        headPtr->prev = target;     // old headPtr points backwards to new headPtr
+        target->next = headPtr;     // make this item point to the previous start
+        headPtr = target;           // Makes the start point to the new item
     }
 
     // Add a new item at the end of the list
-    void insertAtEnd(string n, int id, double p, int s, string dept, string a) {
-        Item* newItem = new Item();     // creates a newItem variable holding the adress of the new item.
-
-        // Assigning data
-        newItem->name = n;
-        newItem->ID = id;
-        newItem->price = p;
-        newItem->stock = s;
-        newItem->department = dept;
-        newItem->aisle = a;
-        
-        // Assigning pointers
-        // Assing the start to the new pointer if the list is empty
-        if (!headPtr) {
-            headPtr = newItem;
-            return; // exit function
-        }
+    void insertAtEnd(Item* target) {
 
         // Traverse to the last Item in the list
         Item* temp = headPtr;
@@ -84,10 +62,71 @@ public:
             temp = temp->next;
         }
         // Update the last item's next pointer to the new item
-        temp->next = newItem;
+        temp->next = target;
+        target->prev = temp;
     }
 
     // Find a way to merge those two functions at some point.
+    void addItem(string n, int id, double p, int s, string dept, string a) {
+
+        Item* newItem = new Item();     // creates a newItem variable holding the adress of the new item.
+
+        // Assigning data
+        newItem->name = n;
+        newItem->ID = id;
+        newItem->price = p;
+        newItem->stock = s;
+        newItem->department = dept;
+        newItem->aisle = a;
+
+
+        // Check if list is empty and add new item if it does
+        if (!headPtr) {
+            headPtr = newItem;
+            return;     // Exit function
+        }
+
+        Item* temp = headPtr;   // Start at beginning of list
+        
+        // Check and add item to start of list
+        if (temp->name > newItem->name) {
+            insertAtBeginning(newItem);
+            return;
+        }
+
+        //temp = temp->next;      // move forward off of the headPtr
+
+        // Traverse List and check as we go. Probably
+        while (temp) {
+            if (temp->name > newItem->name) {
+                newItem->next = temp;
+                newItem->prev = temp->prev;
+                
+                // temporarily store temp's address
+                Item* temp2 = temp;
+
+                // Go back to assign next pointer
+                temp = temp->prev;
+                temp->next = newItem;
+
+                // Back to original temp position
+                temp = temp2;
+                temp->prev = newItem;                
+
+                return;
+            }
+            else {
+                temp = temp->next;
+            }
+        }
+
+        // If we've reached the end of the list, add it to the end
+        if (!temp) {
+            insertAtEnd(newItem);
+            return;
+        }
+
+    }
 
     // Delete the first item from the list
     void deleteFromBeginning() {
@@ -135,7 +174,7 @@ public:
     // Display the list (To be Updated to look better in the future)
     void display() {
         if (!headPtr) {
-            cout << "There is nothing in stock." << endl;
+            cout << "List is empty." << endl;
             return;
         }
 
@@ -155,8 +194,8 @@ public:
 
 };
 
-int test()
-{
+int test() {
+
     // Test Code
     Inventory inventory;
 
@@ -164,8 +203,13 @@ int test()
     inventory.display();
 
     // Adding items to the list
-    inventory.insertAtBeginning("Carrots", 0001, 10.00, 500, "Vegetables", "A1");
-    inventory.insertAtEnd("Lettuce", 0002, 8.99, 450, "Vegetables", "A1");
+    inventory.addItem("Carrots", 0001, 8.00, 500, "Vegetables", "A1");      // Add item when list is empty 
+    inventory.addItem("Lettuce", 0002,  8.99, 450, "Vegetables", "A1");     // Add item at end of list
+    inventory.addItem("Bananas", 0003, 8.50, 400, "Fruits", "A2");          // Add item at start of list
+    inventory.addItem("Cherries", 0004, 5.50, 400, "Fruits", "A2");         // Add item in the middle of list
+    inventory.addItem("Watermelon", 0005, 10.00, 100, "Fruits", "A2");      // Add item at end of list
+    inventory.addItem("Apples", 0006, 7.60, 495, "Fruits", "A2");           // Add item at start of list
+
 
     // Display list
     inventory.display();
