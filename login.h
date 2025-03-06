@@ -13,6 +13,7 @@ void login() {
 	int size = acc.size(), i;
 	int account;
 	int tries = 0;
+	system("cls");
 	cout << setw(5) << " " << "Login Page\n";
 	cout << setfill('-') << setw(25) << "-" << setfill(' ');
 	do{
