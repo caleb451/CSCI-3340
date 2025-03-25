@@ -3,17 +3,17 @@ Dev: Jay
 Program: System in charge of handling the storage of items in the inventory and related functions
 */
 
+// To Be Implemented
 /*
-To Be Implemented:
-general "delete" function
+Confirmation for Item deletion
+Display list of items for deletion?
+Move certain functions to private sector of Inventory class?
 */
 
 #include <iostream>
 #include <string>
 
 using namespace std;
-
-
 
 // Structure for items in the list
 struct Item {
@@ -27,7 +27,7 @@ struct Item {
     
     // Links to the next and previous items in the list
     Item* next;         // points to the next item in the list
-    Item* prev;     // points to the previous item in the list
+    Item* prev;         // points to the previous item in the list
 
 };
 
@@ -38,8 +38,6 @@ class Inventory {
     
 public:
     Inventory() : headPtr(NULL) {} // Constructor to initialize the head pointer to null
-
-
 
     // Functions 
 
@@ -130,12 +128,6 @@ public:
 
     // Delete the first item from the list
     void deleteFromBeginning() {
-        // Check that the list isn't empty
-        if (!headPtr) {
-            cout << "List is empty." << endl;
-            return;
-        }
-
         Item* temp = headPtr;   
         headPtr = temp->next;
         delete temp;
@@ -143,19 +135,6 @@ public:
 
     // Delete the last item in the list
     void deleteFromEnd() {
-        // Check that the list isn't empty
-        if (!headPtr) {
-            cout << "List is empty." << endl;
-            return;
-        }
-
-        // Check if there is only one item in the list
-        if (!headPtr->next) {
-            delete headPtr;     // Delete the pointer
-            headPtr = NULL;     // Set the pointer to NULL
-            return;
-        }
-
         // Traversing to the second to last node
         Item* temp = headPtr;
         // checks that the next item points to another "next" item
@@ -169,7 +148,91 @@ public:
         temp->next = NULL;
     }
 
-    // Again, find a way to combine the delete functions into one all purpose delete function. Problem for Future Jay.
+
+    void delSelection() {
+        // Check that the list isn't empty
+        if (!headPtr) {
+            cout << "List is empty." << endl;
+            return;
+        }
+
+        Item* temp = headPtr;
+        string name;
+
+        // Get Input
+        cout << "What item would you like to delete?\nItem Name: ";
+        cin >> name;
+
+        // Find Item
+        // While temp exists, search the list
+        while (temp) {
+            if (temp->name == name) {
+                // Get user confirmation (to be implemented)
+                delItem(temp);
+                return;                     // Exit function
+            }
+
+            else if (temp->next) {
+                temp = temp->next;
+            }
+
+            else {
+                // If item cannot be found
+                cout << "Item not found, please try again." << endl;
+                delSelection();       // Call function again
+                return;             // Exit function once successfully executed
+            }
+        }
+    }
+
+    // Function to actually delete items (Move to Private later?)
+    void delItem(Item* target) {
+        // Variables
+        Item* p = target->prev;     // Hold target item's previous pointer
+        Item* n = target->next;     // Hold target item's next     pointer
+
+        // Processes
+        // Check if the target is the headPtr
+        if (headPtr == target) {
+            // Does a "next" item exist?
+            if (target->next) {
+                headPtr = target->next; // next item becomes the new headPtr
+                n->prev = NULL;         // next item's previous pointer gets wiped
+                delete target;          // Delete target for memory
+                return;     // Exit function
+            }
+            // If headPtr is the only item in the list
+            else {
+                headPtr = NULL;
+                delete target;
+                return;     // Exit function
+            }
+        }
+
+        // Else replace appropriate links
+        else {
+            // If the target item has no next pointer, set previous item's next pointer to NULL
+            if (!target->next) {
+                p->next = NULL;
+                delete target;
+                return;     // Exit function
+            }
+
+            // If the target does have a next pointer, replace appropriate pointers
+            else if (target->next) {
+                p->next = n;
+                n->prev = p;
+
+                delete target;
+                return;     // Exit function
+            }
+            
+        }
+
+        // delete target to free up memory
+        delete target;
+
+    }
 
     // Display the list (To be Updated to look better in the future)
     void display() {
@@ -195,7 +258,6 @@ public:
 };
 
 int test() {
-
     // Test Code
     Inventory inventory;
 
@@ -214,6 +276,11 @@ int test() {
     // Display list
     inventory.display();
 
+    // Delete an item
+    inventory.delSelection();
+
+    // Display updated List
+    inventory.display();
+
     return 0;
 }
-
