@@ -41,6 +41,7 @@ public:
 
     // Functions 
 
+    // Item Addition Functions
     // Add a new item at the start of the list
     void insertAtBeginning(Item* target) {
 
@@ -126,6 +127,7 @@ public:
 
     }
 
+    // Item Deletion Functions
     // Delete the first item from the list
     void deleteFromBeginning() {
         Item* temp = headPtr;   
@@ -234,6 +236,7 @@ public:
 
     }
 
+    // Other Functions
     // Display the list (To be Updated to look better in the future)
     void display() {
         if (!headPtr) {
@@ -255,14 +258,55 @@ public:
         cout << "End of List" << endl;     // Prints when at the end of list
     }
 
+    // Search for an Item by name
+    void search() {
+        // Check the list isn't empty
+        if (!headPtr) {
+            cout << "List is empty." << endl;
+            return;     // Exit function
+        }
+
+        // Variables
+        Item* temp = headPtr;
+        string target;
+
+        // Get user input
+        cout << "Please input desired item's name: ";
+        cin >> target;
+
+        // Traverse the list until we find the right item or reach the end of the list (While temp exists)
+        while (temp) {
+            // check if current item is the target item
+            if (temp->name == target) {
+                cout << "Item Name: " << temp->name << "\nItem ID: " << temp->ID <<
+                    "\nItem Price: $" << temp->price << "\nItem Stock: " << temp->stock <<
+                    "\nItem Department: " << temp->department << " in Aisle: " << temp->aisle << endl << endl;
+                return;     // Exit function
+            }
+
+            // Move forward in the list
+            else {
+                temp = temp->next;
+            }
+
+        }
+        
+    }
+
 };
 
 int test() {
     // Test Code
     Inventory inventory;
 
-    // Attempt to display empty list
+    // Attempt to Display empty list
     inventory.display();
+    
+    // Attempt to Delete in an empty list
+    inventory.delSelection();
+
+    // Attemp to Search in an empty list
+    inventory.search();
 
     // Adding items to the list
     inventory.addItem("Carrots", 0001, 8.00, 500, "Vegetables", "A1");      // Add item when list is empty 
@@ -281,6 +325,10 @@ int test() {
 
     // Display updated List
     inventory.display();
+
+    // Search for an item
+    inventory.search();
+    inventory.search();
 
     return 0;
 }
