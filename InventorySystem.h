@@ -7,11 +7,12 @@ Program: System in charge of handling the storage of items in the inventory and 
 /*
 Confirmation for Item deletion
 Display list of items for deletion?
-Move certain functions to private sector of Inventory class?
+Edit function
 */
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -35,12 +36,8 @@ struct Item {
 // Class for the linked list
 class Inventory {
     Item* headPtr;      // Points to the start of the list
-    
-public:
-    Inventory() : headPtr(NULL) {} // Constructor to initialize the head pointer to null
 
-    // Functions 
-
+private:
     // Item Addition Functions
     // Add a new item at the start of the list
     void insertAtBeginning(Item* target) {
@@ -65,7 +62,85 @@ public:
         target->prev = temp;
     }
 
-    // Find a way to merge those two functions at some point.
+    // Item Deletion Functions
+
+    // Delete the first item from the list
+    void deleteFromBeginning() {
+        Item* temp = headPtr;
+        headPtr = temp->next;
+        delete temp;
+    }
+
+    // Delete the last item in the list
+    void deleteFromEnd() {
+        // Traversing to the second to last node
+        Item* temp = headPtr;
+        // checks that the next item points to another "next" item
+        while (temp->next->next) {
+            temp = temp->next;
+        }
+
+        // Delete the last item
+        delete temp->next;
+        // Set the second to last item's pointer to NULL
+        temp->next = NULL;
+    }
+
+    // Function to actually delete items
+    void delItem(Item* target) {
+        // Variables
+        Item* p = target->prev;     // Hold target item's previous pointer
+        Item* n = target->next;     // Hold target item's next     pointer
+
+        // Processes
+        // Check if the target is the headPtr
+        if (headPtr == target) {
+            // Does a "next" item exist?
+            if (target->next) {
+                headPtr = target->next; // next item becomes the new headPtr
+                n->prev = NULL;         // next item's previous pointer gets wiped
+                delete target;          // Delete target for memory
+                return;     // Exit function
+            }
+            // If headPtr is the only item in the list
+            else {
+                headPtr = NULL;
+                delete target;
+                return;     // Exit function
+            }
+        }
+
+        // Else replace appropriate links
+        else {
+            // If the target item has no next pointer, set previous item's next pointer to NULL
+            if (!target->next) {
+                p->next = NULL;
+                delete target;
+                return;     // Exit function
+            }
+
+            // If the target does have a next pointer, replace appropriate pointers
+            else if (target->next) {
+                p->next = n;
+                n->prev = p;
+
+                delete target;
+                return;     // Exit function
+            }
+
+        }
+
+        // delete target to free up memory
+        delete target;
+
+    }
+  
+public:
+    Inventory() : headPtr(NULL) {} // Constructor to initialize the head pointer to null
+
+    // Functions 
+
+    // Add Item
     void addItem(string n, int id, double p, int s, string dept, string a) {
 
         Item* newItem = new Item();     // creates a newItem variable holding the adress of the new item.
@@ -127,30 +202,7 @@ public:
 
     }
 
-    // Item Deletion Functions
-    // Delete the first item from the list
-    void deleteFromBeginning() {
-        Item* temp = headPtr;   
-        headPtr = temp->next;
-        delete temp;
-    }
-
-    // Delete the last item in the list
-    void deleteFromEnd() {
-        // Traversing to the second to last node
-        Item* temp = headPtr;
-        // checks that the next item points to another "next" item
-        while (temp->next->next) {
-            temp = temp->next;
-        }
-
-        // Delete the last item
-        delete temp->next;
-        // Set the second to last item's pointer to NULL
-        temp->next = NULL;
-    }
-
-
+    // Del Item
     void delSelection() {
         // Check that the list isn't empty
         if (!headPtr) {
@@ -171,7 +223,7 @@ public:
             if (temp->name == name) {
                 // Get user confirmation (to be implemented)
                 delItem(temp);
-                return;                     // Exit function
+                return;             // Exit function
             }
 
             else if (temp->next) {
@@ -185,55 +237,6 @@ public:
                 return;             // Exit function once successfully executed
             }
         }
-    }
-
-    // Function to actually delete items (Move to Private later?)
-    void delItem(Item* target) {
-        // Variables
-        Item* p = target->prev;     // Hold target item's previous pointer
-        Item* n = target->next;     // Hold target item's next     pointer
-
-        // Processes
-        // Check if the target is the headPtr
-        if (headPtr == target) {
-            // Does a "next" item exist?
-            if (target->next) {
-                headPtr = target->next; // next item becomes the new headPtr
-                n->prev = NULL;         // next item's previous pointer gets wiped
-                delete target;          // Delete target for memory
-                return;     // Exit function
-            }
-            // If headPtr is the only item in the list
-            else {
-                headPtr = NULL;
-                delete target;
-                return;     // Exit function
-            }
-        }
-
-        // Else replace appropriate links
-        else {
-            // If the target item has no next pointer, set previous item's next pointer to NULL
-            if (!target->next) {
-                p->next = NULL;
-                delete target;
-                return;     // Exit function
-            }
-
-            // If the target does have a next pointer, replace appropriate pointers
-            else if (target->next) {
-                p->next = n;
-                n->prev = p;
-
-                delete target;
-                return;     // Exit function
-            }
-            
-        }
-
-        // delete target to free up memory
-        delete target;
-
     }
 
     // Other Functions
