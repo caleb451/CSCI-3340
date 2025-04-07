@@ -7,7 +7,9 @@ Program: System in charge of handling the storage of items in the inventory and 
 /*
 Confirmation for Item deletion
 Display list of items for deletion?
-Edit function
+More work on Edit function
+Import data function
+Export data function
 */
 
 #include <iostream>
@@ -39,6 +41,7 @@ class Inventory {
 
 private:
     // Item Addition Functions
+    
     // Add a new item at the start of the list
     void insertAtBeginning(Item* target) {
 
@@ -134,6 +137,16 @@ private:
         delete target;
 
     }
+
+    // Miscellaneous Functions
+    
+    // Print Item
+    void print(Item* temp) {
+        cout << "Item Name: " << temp->name << "\nItem ID: " << temp->ID <<
+            "\nItem Price: $" << temp->price << "\nItem Stock: " << temp->stock <<
+            "\nItem Department: " << temp->department << " in Aisle: " << temp->aisle << endl << endl;
+        return;     // Exit function
+    }
   
 public:
     Inventory() : headPtr(NULL) {} // Constructor to initialize the head pointer to null
@@ -202,6 +215,11 @@ public:
 
     }
 
+    // Add items to the system from a file
+    void import() {
+
+    }
+
     // Del Item
     void delSelection() {
         // Check that the list isn't empty
@@ -239,9 +257,55 @@ public:
         }
     }
 
-    // Other Functions
+    // Miscellaneous Functions
+    
+    // Edit Item
+    void editStock() {
+        // Check the list isn't empty
+        if (!headPtr) {
+            cout << "List is empty." << endl;
+            return;     // Exit function
+        }
+
+        // Variables
+        string target;          // Target Item's Name
+        Item* temp = headPtr;   // temp item
+        int s;                  // New Stock
+
+        // Get user input
+        cout << "Please input desired item's name: ";
+        cin >> target;
+
+        // Traverse the list until we find the right item or reach the end of the list (While temp exists)
+        while (temp) {
+            // check if current item is the target item
+            if (temp->name == target) {
+                cout << "Current Item Stock is: " << temp->stock << endl;
+                cout << "Please input new stock: ";
+                cin >> s;
+
+                temp->stock = s;
+
+                cout << "New stock for " << temp->name << " is: " << temp->stock << endl;
+
+                return;     // Exit function
+            }
+
+            // Move forward in the list
+            else {
+                temp = temp->next;
+            }
+
+        }
+
+        // In case item is not found
+        cout << "Could not find item." << endl;
+
+        return;
+    }
+
     // Display the list (To be Updated to look better in the future)
-    void display() {
+    void displayList() {
         if (!headPtr) {
             cout << "List is empty." << endl;
             return;
@@ -251,10 +315,7 @@ public:
 
         // Print the information in the list as long as it exists
         while (temp) {
-            cout << "Item Name: " << temp->name << "\nItem ID: " << temp->ID <<
-                "\nItem Price: $" << temp->price << "\nItem Stock: " << temp->stock <<
-                "\nItem Department: " << temp->department << " in Aisle: " << temp->aisle << endl << endl;
-
+            print(temp);
             temp = temp->next;  // Move to next item
         }
 
@@ -281,9 +342,7 @@ public:
         while (temp) {
             // check if current item is the target item
             if (temp->name == target) {
-                cout << "Item Name: " << temp->name << "\nItem ID: " << temp->ID <<
-                    "\nItem Price: $" << temp->price << "\nItem Stock: " << temp->stock <<
-                    "\nItem Department: " << temp->department << " in Aisle: " << temp->aisle << endl << endl;
+                print(temp);
                 return;     // Exit function
             }
 
@@ -293,45 +352,54 @@ public:
             }
 
         }
-        
+
+        // In case item is not found
+        cout << "Could not find item." << endl;
+        return;
     }
 
+    // Export items to a file
+    void export() {
+
+    }
 };
-
 int test() {
-    // Test Code
-    Inventory inventory;
+ // Test Code
+ Inventory inventory;
 
-    // Attempt to Display empty list
-    inventory.display();
-    
-    // Attempt to Delete in an empty list
-    inventory.delSelection();
+ // Attempt to Display empty list
+ inventory.displayList();
+ 
+ // Attempt to Delete in an empty list
+ inventory.delSelection();
 
-    // Attemp to Search in an empty list
-    inventory.search();
+ // Attemp to Search in an empty list
+ inventory.search();
 
-    // Adding items to the list
-    inventory.addItem("Carrots", 0001, 8.00, 500, "Vegetables", "A1");      // Add item when list is empty 
-    inventory.addItem("Lettuce", 0002,  8.99, 450, "Vegetables", "A1");     // Add item at end of list
-    inventory.addItem("Bananas", 0003, 8.50, 400, "Fruits", "A2");          // Add item at start of list
-    inventory.addItem("Cherries", 0004, 5.50, 400, "Fruits", "A2");         // Add item in the middle of list
-    inventory.addItem("Watermelon", 0005, 10.00, 100, "Fruits", "A2");      // Add item at end of list
-    inventory.addItem("Apples", 0006, 7.60, 495, "Fruits", "A2");           // Add item at start of list
+ // Adding items to the list
+ inventory.addItem("Carrots", 0001, 8.00, 500, "Vegetables", "A1");      // Add item when list is empty 
+ inventory.addItem("Lettuce", 0002,  8.99, 450, "Vegetables", "A1");     // Add item at end of list
+ inventory.addItem("Bananas", 0003, 8.50, 400, "Fruits", "A2");          // Add item at start of list
+ inventory.addItem("Cherries", 0004, 5.50, 400, "Fruits", "A2");         // Add item in the middle of list
+ inventory.addItem("Watermelon", 0005, 10.00, 100, "Fruits", "A2");      // Add item at end of list
+ inventory.addItem("Apples", 0006, 7.60, 495, "Fruits", "A2");           // Add item at start of list
 
 
-    // Display list
-    inventory.display();
+ // Display list
+ inventory.displayList();
 
-    // Delete an item
-    inventory.delSelection();
+ // Delete an item
+ inventory.delSelection();
 
-    // Display updated List
-    inventory.display();
+ // Display updated List
+ inventory.displayList();
 
-    // Search for an item
-    inventory.search();
-    inventory.search();
+ // Search for an item
+ inventory.search();
+ inventory.search();
 
-    return 0;
+ // Edit Item Stock
+ inventory.editStock();
+
+ return 0;
 }
