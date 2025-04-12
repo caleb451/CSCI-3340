@@ -30,15 +30,23 @@ int main(){
     
     do{
         answer = start();
+        account currentUser;
         switch(answer){
             case '1':
-                login();
+                currentUser = login();
+                inventory.editStock(currentUser);
+                if (currentUser.privilege == "manager" || currentUser.privilege == "worker") {
+                    cout << "\nWelcome. You can update stock.\n";
+                    inventory.editStock(currentUser);  // <-- allow access
+                } 
+                else
+                    cout << "\nAccess denied. Only employees or managers can edit stock.\n";
+                goBack();
                 break;
             case '2':
                 system("cls");
                 cout << "View Inventory" << endl;
                 cout << "------------------------" << endl;
-                inventory.display();
                 goBack();
                 break;
             default:

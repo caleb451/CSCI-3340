@@ -7,11 +7,11 @@
 #include <iomanip>
 using namespace std;
 
-void login() {
+account login() {
 	vector<account> acc = addAcc();
 	string username, password;
 	int size = acc.size(), i;
-	int account;
+	int accountIndex;
 	int tries = 0;
 	system("cls");
 	cout << setw(5) << " " << "Login Page\n";
@@ -26,7 +26,7 @@ void login() {
 			if (acc[i].checkUser(username)) {
 				while (acc[i].checkTries()) {
 					if (acc[i].password == password) {
-					    account = i;
+					    accountIndex = i;
 						cout << "Login success.\n" << "Welcome " << acc[i].name << "!\n";
 						break;
 					}
@@ -39,9 +39,8 @@ void login() {
 					}
 				}
 				if (!acc[i].checkTries()) {
-				    system("cls");
-					cout << "Too many attempts, please try again later.\n";
-					break;
+					cout << "Too many attempts\n";
+					return account{};
 				}
 				else
 					break;
@@ -58,4 +57,5 @@ void login() {
 		else 
 		    break;
 	}while (true);
+	return acc[accountIndex];
 }

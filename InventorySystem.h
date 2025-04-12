@@ -11,7 +11,7 @@ More work on Edit function
 Import data function
 Export data function
 */
-
+#include "account.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -31,7 +31,6 @@ struct Item {
     // Links to the next and previous items in the list
     Item* next;         // points to the next item in the list
     Item* prev;         // points to the previous item in the list
-
 };
 
 
@@ -151,6 +150,9 @@ private:
 public:
     Inventory() : headPtr(NULL) {} // Constructor to initialize the head pointer to null
 
+    Item* getHead() {
+        return headPtr;
+    }
     // Functions 
 
     // Add Item
@@ -260,7 +262,12 @@ public:
     // Miscellaneous Functions
     
     // Edit Item
-    void editStock() {
+    void editStock(account user){
+        // Checks whether or not they can edit the stock
+        if (user.privilege != "manager" && user.privilege != "worker") {
+            cout << "Access denied: insufficient privilege.\n";
+            return;
+        }
         // Check the list isn't empty
         if (!headPtr) {
             cout << "List is empty." << endl;
@@ -359,47 +366,139 @@ public:
     }
 
     // Export items to a file
-    void export() {
+    void exportInventory() {
 
     }
+
+    void addEmployeeAccount() {
+        ofstream out("accountInformation.txt", ios::app); // Append mode
+        if (!out) {
+            cout << "Error opening file.\n";
+            return;
+        }
+    
+        string username, password, name, phone;
+        cout << "Enter employee username: "; cin >> username;
+        cout << "Enter password: "; cin >> password;
+        cout << "Enter full name: "; cin.ignore(); getline(cin, name);
+        cout << "Enter phone number: "; cin >> phone;
+    
+        out << "- " << username << " " << password << " "
+            << name << " " << phone << endl;
+    
+        out.close();
+        cout << "Employee account added.\n";
+    }
+    
+    void updateItemInfo(account user, Inventory& inventory) {
+        if (user.privilege != "manager") {
+            cout << "Access Denied. Only managers can update item info.\n";
+            return;
+        }
+    
+        string target;
+        cout << "Enter item name to update: ";
+        cin >> target;
+    
+        Item* temp = inventory.getHead();  // You'll need to expose `headPtr` via a getter
+    
+        while (temp) {
+            if (temp->name == target) {
+                int choice;
+                cout << "1. Update name\n2. Update price\nChoice: ";
+                cin >> choice;
+    
+                if (choice == 1) {
+                    string newName;
+                    cout << "New name: "; cin >> newName;
+                    temp->name = newName;
+                } else if (choice == 2) {
+                    double newPrice;
+                    cout << "New price: "; cin >> newPrice;
+                    temp->price = newPrice;
+                }
+    
+                cout << "Update successful.\n";
+                return;
+            }
+            temp = temp->next;
+        }
+    
+        cout << "Item not found.\n";
+    }
+    
 };
+
+/*
 int test() {
- // Test Code
- Inventory inventory;
+    // Test Code
+    Inventory inventory;
+    account testEmployee, testCustomer;
 
- // Attempt to Display empty list
- inventory.displayList();
- 
- // Attempt to Delete in an empty list
- inventory.delSelection();
+    // Set up test accounts
+    testEmployee.setName("Test Employee");
+    testEmployee.setUsername("emp01");
+    testEmployee.setPrivilege("worker");
 
- // Attemp to Search in an empty list
- inventory.search();
+    testCustomer.setName("Test Customer");
+    testCustomer.setUsername("cust01");
+    testCustomer.setPrivilege("costumer");
 
- // Adding items to the list
- inventory.addItem("Carrots", 0001, 8.00, 500, "Vegetables", "A1");      // Add item when list is empty 
- inventory.addItem("Lettuce", 0002,  8.99, 450, "Vegetables", "A1");     // Add item at end of list
- inventory.addItem("Bananas", 0003, 8.50, 400, "Fruits", "A2");          // Add item at start of list
- inventory.addItem("Cherries", 0004, 5.50, 400, "Fruits", "A2");         // Add item in the middle of list
- inventory.addItem("Watermelon", 0005, 10.00, 100, "Fruits", "A2");      // Add item at end of list
- inventory.addItem("Apples", 0006, 7.60, 495, "Fruits", "A2");           // Add item at start of list
+    // Add a sample item
+    inventory.addItem("Orange Juice", 1001, 3.99, 50, "Beverages", "B2");
 
+    // Attempt stock update with valid employee
+    cout << "\n[TEST 1] Valid employee updating stock:" << endl;
+    inventory.editStock(testEmployee);  // should proceed
 
- // Display list
- inventory.displayList();
+    // Attempt stock update with invalid customer
+    cout << "\n[TEST 2] Invalid customer attempting to update stock:" << endl;
+    inventory.editStock(testCustomer);  // should deny access
 
- // Delete an item
- inventory.delSelection();
+    // Attempt to Display empty list
+    inventory.displayList();
 
- // Display updated List
- inventory.displayList();
+    // Attempt to Delete in an empty list
+    inventory.delSelection();
 
- // Search for an item
- inventory.search();
- inventory.search();
+    // Attemp to Search in an empty list
+    inventory.search(); 
 
- // Edit Item Stock
- inventory.editStock();
+    // Adding items to the list
+    inventory.addItem("Carrots", 0001, 8.00, 500, "Vegetables", "A1");      // Add item when list is empty 
+    inventory.addItem("Lettuce", 0002,  8.99, 450, "Vegetables", "A1");     // Add item at end of list
+    inventory.addItem("Bananas", 0003, 8.50, 400, "Fruits", "A2");          // Add item at start of list
+    inventory.addItem("Cherries", 0004, 5.50, 400, "Fruits", "A2");         // Add item in the middle of list
+    inventory.addItem("Watermelon", 0005, 10.00, 100, "Fruits", "A2");      // Add item at end of list
+    inventory.addItem("Apples", 0006, 7.60, 495, "Fruits", "A2");           // Add item at start of list    
+    // Display list
+    inventory.displayList();    
 
- return 0;
-}
+    // Delete an item
+    inventory.delSelection();   
+
+    // Display updated List
+    inventory.displayList();    
+
+    // Search for an item
+    inventory.search();
+    inventory.search(); 
+
+    // Edit Item Stock
+    inventory.editStock();  
+
+    if (currentUser.privilege == "manager") {
+        inventory.addItem("Oranges", 101, 1.99, 100, "Produce", "A2");
+    } else {
+        cout << "Access Denied. Only managers can add items.\n";
+    }
+    
+    if (currentUser.privilege == "manager") {
+        inventory.delSelection();  // prompts for item name
+    } else {
+        cout << "Access Denied. Only managers can remove items.\n";
+    }
+
+    inventory.editStock(currentUser); // Only works if currentUser is employee/manager
+    return 0;
+} */
