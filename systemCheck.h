@@ -25,6 +25,9 @@ char start(account& currentUser){
     cout << "Logged In As: " << currentUser.privilege << endl;
     cout << setw(20) << left << "1. Login" << endl;
     cout << setw(20) << "2. View Inventory" << endl;
+    if (currentUser.privilege == "manager") {
+        cout << setw(20) << "3. Create New Account" << endl;
+    }
     cout << setw(20)<< right << "Select one of the options above:" << endl;
     cin >> answer;
     return answer;
