@@ -40,7 +40,6 @@ class Inventory {
 
 private:
     // Item Addition Functions
-    
     // Add a new item at the start of the list
     void insertAtBeginning(Item* target) {
 
@@ -154,6 +153,25 @@ public:
         return headPtr;
     }
     // Functions 
+    
+    //view the inventory
+    void view() {
+        ifstream file("inventory.txt");
+        string line;
+        if (!file.is_open()) {
+            cout << "Inventory file not found.\n";
+            return;
+        }
+
+        cout << "ID\tItem\t\tQty\tPrice\n";
+        cout << "----------------------------------------\n";
+
+        while (getline(file, line)) {
+            cout << line << endl;
+        }
+
+        file.close();
+    }
 
     // Add Item
     void addItem(string n, int id, double p, int s, string dept, string a) {

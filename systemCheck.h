@@ -23,11 +23,16 @@ char start(account& currentUser){
     else
         currentUser.setPrivilege("guest");
     cout << "Logged In As: " << currentUser.privilege << endl;
-    cout << setw(20) << left << "1. Login" << endl;
+    if(currentUser.privilege == "guest")
+        cout << setw(20) << left << "1. Login" << endl;
+    else
+        cout << setw(20) << left << "1. Logout" << endl;
+
     cout << setw(20) << "2. View Inventory" << endl;
-    if (currentUser.privilege == "manager") {
+    if(currentUser.privilege == "manager") {
         cout << setw(20) << "3. Create New Account" << endl;
     }
+    
     cout << setw(20)<< right << "Select one of the options above:" << endl;
     cin >> answer;
     return answer;
@@ -36,7 +41,7 @@ void end(){
     cout << "Do you want to quit? (Y/N): ";
     char answer;
     cin >> answer;
-    if (answer == 'Y' || answer == 'y'){
+    if(answer == 'Y' || answer == 'y'){
        cout << "Program terminated." << endl;
         exit(0);
     }

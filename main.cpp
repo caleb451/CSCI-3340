@@ -53,10 +53,29 @@ int main() {
                     system("cls");
                     cout << "View Inventory" << endl;
                     cout << "------------------------" << endl;
-                    // inventory.view(); // <- add your inventory logic here
+                    inventory.view();
                     goBack();
                     break;
-
+                case '3':
+                    if (currentUser.privilege == "manager") {
+                        createAccount();
+                    } 
+                    else {
+                        cout << "Unauthorized access. Manager only." << endl;
+                        goBack();
+                    }
+                    break;
+                case '4':
+                    if (currentUser.privilege == "manager" || currentUser.privilege == "worker") {
+                        cout << "Logging out...\n";
+                        Sleep(1000);
+                        currentUser = account{}; // Reset to guest
+                        currentUser.setPrivilege("guest"); // explicitly mark as guest
+                    } 
+                    else {
+                        cout << "Invalid option for guests.\n";
+                    }
+                    break;
                 case 'q': // Quit program
                 case 'Q':
                     quit = true;
