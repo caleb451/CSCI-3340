@@ -18,29 +18,26 @@ using namespace std;
 int main(){
     Inventory inventory;
     char answer;
+    account currentUser;
     bool quit = false;
-    // (void) system("cls");
-    // for (int i = 0; i < 3; i++){
-    //     cout << "Loading..";
-    //     Sleep(500);
-    //     cout << ".";
-    //     Sleep(1000);
-    //     (void) system("cls");
-    // }
     
     do{
-        answer = start();
-        account currentUser;
+        currentUser = login(); // Call the login function to get the current user
+        if (currentUser.privilege == "manager" || currentUser.privilege == "worker") {
+            cout << "Login success." << endl;
+            cout << "Welcome " << currentUser.name << endl;
+        }
+        else{
+            Sleep(2000);
+            (void) system("cls");
+            cout << "Continuing as a Guest, you will have limited access." << endl;
+            Sleep(2000);
+            load();
+            answer = start(currentUser);
+        }
         switch(answer){
             case '1':
-                currentUser = login();
-                inventory.editStock(currentUser);
-                if (currentUser.privilege == "manager" || currentUser.privilege == "worker") {
-                    cout << "\nWelcome. You can update stock.\n";
-                    inventory.editStock(currentUser);  // <-- allow access
-                } 
-                else
-                    cout << "\nAccess denied. Only employees or managers can edit stock.\n";
+                answer = start(currentUser);
                 goBack();
                 break;
             case '2':
@@ -48,6 +45,9 @@ int main(){
                 cout << "View Inventory" << endl;
                 cout << "------------------------" << endl;
                 goBack();
+                break;
+            case 'q':
+                quit = true;
                 break;
             default:
                 cout << "Invalid input. Please try again." << endl;

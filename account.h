@@ -88,3 +88,7 @@ void account::displayInfo(){
 void account::displayWelcome(){
     cout << "\n\nWelcome " << name;
 }
+
+// void account::isLogin(){
+//     cout << "\n\nWelcome " << name;
+// }

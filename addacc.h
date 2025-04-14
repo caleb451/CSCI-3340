@@ -23,6 +23,7 @@ vector<string> split(const string& str, char delimiter) {
 
 account addinfo(string empInfo) {
 	account employee;
+    account currentUser;
     vector<string> info = split(empInfo, ' ');
     char x = info[0][0];
     
@@ -38,6 +39,7 @@ account addinfo(string empInfo) {
             break;
         default:
             employee.setPrivilege("guest");
+            currentUser.setPrivilege("guest");
     }
     employee.setUsername(info[1]);
     employee.setPassword(info[2]);
@@ -48,13 +50,11 @@ account addinfo(string empInfo) {
 
 vector<account> addAcc() {
     ifstream empInfo("accountInformation.txt");
-    while(true){
-        if (!empInfo) {
-            cout << "Error: file could not be opened." << endl;
-        }
-        else
-            break;
+    if (!empInfo.is_open()) {
+        cerr << "Error: file could not be opened." << endl;
+        return {};
     }
+
     string line;
     vector<account> empAccounts;
 

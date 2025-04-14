@@ -1,20 +1,28 @@
 //This will send default responses to the user if they want to quit or go back.
-
+#pragma once
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include "account.h"
 using namespace std;
 
 //Function prototypes
-void(goBack());
-void(end());
-char start();
+void goBack();
+void end();
+void load();
+char start(account& currentUser);
 
 //Function definitions
-char start(){
+char start(account& currentUser){
     char answer;
     system("cls");
     cout << "------------------------" << " [STORE NAME] " << "------------------------" << endl;
+    if(currentUser.privilege == "manager" || currentUser.privilege == "worker"){
+        cout << "Welcome " << currentUser.name << endl;
+    }
+    else
+        currentUser.setPrivilege("guest");
+    cout << "Logged In As: " << currentUser.privilege << endl;
     cout << setw(20) << left << "1. Login" << endl;
     cout << setw(20) << "2. View Inventory" << endl;
     cout << setw(20)<< right << "Select one of the options above:" << endl;
@@ -41,4 +49,15 @@ void goBack(){
     }
     else
         end();
+}
+
+void load(){
+    (void) system("cls");
+    for (int i = 0; i < 3; i++){
+        cout << "Loading..";
+        Sleep(500);
+        cout << ".";
+        Sleep(1000);
+        (void) system("cls");
+    }
 }
