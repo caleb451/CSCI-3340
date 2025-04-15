@@ -1,0 +1,4 @@
+1001 screwdriver 10 4.99 tools A1
+1002 hammer 5 8.99 tools A1
+1003 nails 100 0.10 hardware B2
+1004 drill 2 49.99 tools A3

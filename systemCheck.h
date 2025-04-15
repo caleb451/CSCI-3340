@@ -31,8 +31,9 @@ char start(account& currentUser){
     cout << setw(20) << "2. View Inventory" << endl;
     if(currentUser.privilege == "manager") {
         cout << setw(20) << "3. Create New Account" << endl;
-    }
-    
+        cout << "4. Import Inventory" << endl;
+        cout << "5. Export Inventory" << endl;
+    }   
     cout << setw(20)<< right << "Select one of the options above:" << endl;
     cin >> answer;
     return answer;

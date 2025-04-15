@@ -17,6 +17,7 @@ Export data function
 #include <fstream>
 #include <filesystem>
 #include <ctime>
+#include <vector>
 namespace fs = std::filesystem;
 
 using namespace std;
@@ -261,24 +262,28 @@ public:
     }
 
     // Add items to the system from a file
-    void import() {
-    string folder = "./inventory_history";
-    if (!fs::exists(folder) || !fs::is_directory(folder)) {
-        cout << "No inventory history folder found.\n";
-        return;
-    }
-
-    cout << "Available Inventory Files:\n";
-    vector<string> fileList;
-    int index = 1;
-
-    for (const auto& entry : fs::directory_iterator(folder)) {
-        if (entry.path().extension() == ".txt") {
-            cout << index << ". " << entry.path().filename().string() << endl;
-            fileList.push_back(entry.path().string());
-            index++;
+    void importInv(account user) {
+        if (user.privilege != "manager") {
+            cout << "Access denied. Only employees can export inventory.\n";
+            return;
         }
-    }
+        string folder = "./inventory_history";
+        if (!fs::exists(folder) || !fs::is_directory(folder)) {
+            cout << "No inventory history folder found.\n";
+            return;
+        }
+
+        cout << "Available Inventory Files:\n";
+        vector<string> fileList;
+        int index = 1;
+
+        for (const auto& entry : fs::directory_iterator(folder)) {
+            if (entry.path().extension() == ".txt") {
+                cout << index << ". " << entry.path().filename().string() << endl;
+                fileList.push_back(entry.path().string());
+                index++;
+            }
+        }
 
         if (fileList.empty()) {
             cout << "No valid inventory files found.\n";
@@ -318,6 +323,33 @@ public:
         file.close();
         cout << "Inventory successfully imported from " << selectedFile << endl;
     }
+
+    // Export items to a file
+    void exportInv(account user) {
+        if (user.privilege != "manager") {
+            cout << "Access denied. Only employees can export inventory.\n";
+            return;
+        }
+        ofstream file("inventory.txt");
+        if (!file.is_open()) {
+            cout << "Failed to open file for export.\n";
+            return;
+        }
+
+        Item* temp = headPtr;
+        while (temp) {
+            file << temp->ID << " "
+                 << temp->name << " "
+                 << temp->stock << " "
+                 << temp->price << " "
+                 << temp->department << " "
+                 << temp->aisle << endl;
+            temp = temp->next;
+        }
+
+        file.close();
+        cout << "Inventory succesfully exported file.\n";
+}
 
     // Del Item
     void delSelection() {
@@ -461,29 +493,6 @@ public:
         cout << "Could not find item." << endl;
         return;
     }
-
-    // Export items to a file
-    void exportInventory() {
-        ofstream file("inventory.txt");
-        if (!file.is_open()) {
-            cout << "Failed to open file for export.\n";
-            return;
-        }
-
-        Item* temp = headPtr;
-        while (temp) {
-            file << temp->ID << " "
-                 << temp->name << " "
-                 << temp->stock << " "
-                 << temp->price << " "
-                 << temp->department << " "
-                 << temp->aisle << endl;
-            temp = temp->next;
-        }
-
-        file.close();
-        cout << "Inventory succesfully exported file.\n";
-}
 
     void addEmployeeAccount() {
         ofstream out("accountInformation.txt", ios::app); // Append mode

@@ -41,12 +41,19 @@ int main() {
         // Main Menu
         do {
             answer = start(currentUser);
-
             switch (answer) {
                 case '1': // Login again
-                    currentUser = login();
-                    Sleep(1000);
-                    (void) system("cls");
+                    if (currentUser.privilege == "manager" || currentUser.privilege == "worker") {
+                        cout << "Logging out...\n";
+                        Sleep(1000);
+                        currentUser = account{}; // Reset to guest
+                        currentUser.setPrivilege("guest"); // explicitly mark as guest
+                    } 
+                    else {
+                        currentUser = login();
+                        Sleep(1000);
+                        (void) system("cls");
+                    }
                     break;
 
                 case '2': // View Inventory
@@ -59,22 +66,13 @@ int main() {
                 case '3':
                     if (currentUser.privilege == "manager") {
                         createAccount();
-                    } 
-                    else {
-                        cout << "Unauthorized access. Manager only." << endl;
-                        goBack();
                     }
                     break;
                 case '4':
-                    if (currentUser.privilege == "manager" || currentUser.privilege == "worker") {
-                        cout << "Logging out...\n";
-                        Sleep(1000);
-                        currentUser = account{}; // Reset to guest
-                        currentUser.setPrivilege("guest"); // explicitly mark as guest
-                    } 
-                    else {
-                        cout << "Invalid option for guests.\n";
-                    }
+                    inventory.importInv(currentUser);
+                    break;
+                case '5':
+                    inventory.exportInv(currentUser);
                     break;
                 case 'q': // Quit program
                 case 'Q':

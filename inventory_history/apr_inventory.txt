@@ -1,0 +1,4 @@
+4001 paintbrush 8 3.25 painting F1
+4002 roller 5 4.75 painting F2
+4003 primer 12 6.99 painting F2
+4004 paint 10 9.99 painting F3
