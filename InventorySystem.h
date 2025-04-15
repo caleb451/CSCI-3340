@@ -15,6 +15,9 @@ Export data function
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <filesystem>
+#include <ctime>
+namespace fs = std::filesystem;
 
 using namespace std;
 
@@ -156,21 +159,43 @@ public:
     
     //view the inventory
     void view() {
-        ifstream file("inventory.txt");
-        string line;
-        if (!file.is_open()) {
-            cout << "Inventory file not found.\n";
+        if (!headPtr) {
+            cout << "Inventory is empty.\n";
             return;
         }
-
-        cout << "ID\tItem\t\tQty\tPrice\n";
-        cout << "----------------------------------------\n";
-
-        while (getline(file, line)) {
-            cout << line << endl;
+    
+        cout << left << setw(10) << "ID"
+            << setw(20) << "Name"
+             << setw(10) << "Qty"
+             << setw(10) << "Price"
+             << setw(15) << "Department"
+             << setw(10) << "Aisle"
+             << setw(10) << "Status" << endl;
+    
+        cout << string(85, '-') << endl;
+    
+        Item* temp = headPtr;
+        double totalValue = 0;
+    
+        while (temp) {
+            string status;
+            if (temp->stock == 0) status = "Out";
+            else if (temp->stock < 5) status = "Low";
+            else status = "In";
+    
+            cout << left << setw(10) << temp->ID
+                 << setw(20) << temp->name
+                 << setw(10) << temp->stock
+                 << "$" << fixed << setprecision(2) << setw(9) << temp->price
+                 << setw(15) << temp->department
+                 << setw(10) << temp->aisle
+                 << setw(10) << status << endl;
+    
+            totalValue += temp->stock * temp->price;
+            temp = temp->next;
         }
-
-        file.close();
+    
+        cout << "\nTotal Inventory Value: $" << fixed << setprecision(2) << totalValue << endl;
     }
 
     // Add Item
@@ -237,7 +262,61 @@ public:
 
     // Add items to the system from a file
     void import() {
+    string folder = "./inventory_history";
+    if (!fs::exists(folder) || !fs::is_directory(folder)) {
+        cout << "No inventory history folder found.\n";
+        return;
+    }
 
+    cout << "Available Inventory Files:\n";
+    vector<string> fileList;
+    int index = 1;
+
+    for (const auto& entry : fs::directory_iterator(folder)) {
+        if (entry.path().extension() == ".txt") {
+            cout << index << ". " << entry.path().filename().string() << endl;
+            fileList.push_back(entry.path().string());
+            index++;
+        }
+    }
+
+        if (fileList.empty()) {
+            cout << "No valid inventory files found.\n";
+            return;
+        }
+
+        int choice;
+        cout << "\nSelect a file to import (by number): ";
+        cin >> choice;
+
+        if (choice < 1 || choice > fileList.size()) {
+            cout << "Invalid choice.\n";
+            return;
+        }
+
+        string selectedFile = fileList[choice - 1];
+
+        ifstream file(selectedFile);
+        if (!file.is_open()) {
+            cout << "Failed to open selected file.\n";
+            return;
+        }
+
+        // Clear current list before importing
+        while (headPtr) {
+            deleteFromBeginning();
+        }
+
+        string name, department, aisle;
+        int ID, stock;
+        double price;
+
+        while (file >> ID >> name >> stock >> price >> department >> aisle) {
+            addItem(name, ID, price, stock, department, aisle);
+        }
+
+        file.close();
+        cout << "Inventory successfully imported from " << selectedFile << endl;
     }
 
     // Del Item
@@ -385,8 +464,26 @@ public:
 
     // Export items to a file
     void exportInventory() {
+        ofstream file("inventory.txt");
+        if (!file.is_open()) {
+            cout << "Failed to open file for export.\n";
+            return;
+        }
 
-    }
+        Item* temp = headPtr;
+        while (temp) {
+            file << temp->ID << " "
+                 << temp->name << " "
+                 << temp->stock << " "
+                 << temp->price << " "
+                 << temp->department << " "
+                 << temp->aisle << endl;
+            temp = temp->next;
+        }
+
+        file.close();
+        cout << "Inventory succesfully exported file.\n";
+}
 
     void addEmployeeAccount() {
         ofstream out("accountInformation.txt", ios::app); // Append mode

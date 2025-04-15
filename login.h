@@ -45,7 +45,7 @@ account login() {
         cin >> choice;
 
         if (choice == 'n' || choice == 'N') {
-            cout << "Exiting program.\n";
+            cout << "Continuing as a Guest\n";
             return account{};
         } else if (choice == 'y' || choice == 'Y') {
             break;
