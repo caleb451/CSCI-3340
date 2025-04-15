@@ -13,7 +13,7 @@ void load();
 char start(account& currentUser);
 
 //Function definitions
-char start(account& currentUser){
+char menu(account& currentUser){
     char answer;
     system("cls");
     cout << "------------------------" << " [STORE NAME] " << "------------------------" << endl;

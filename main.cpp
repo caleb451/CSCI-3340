@@ -40,7 +40,7 @@ int main() {
 
         // Main Menu
         do {
-            answer = start(currentUser);
+            answer = menu(currentUser);
             switch (answer) {
                 case '1': // Login again
                     if (currentUser.privilege == "manager" || currentUser.privilege == "worker") {
@@ -61,6 +61,10 @@ int main() {
                     cout << "View Inventory" << endl;
                     cout << "------------------------" << endl;
                     inventory.view();
+                    
+                    if (currentUser.privilege == "manager") {
+                        inventory.updateItemInfo(currentUser, inventory);
+                    }
                     goBack();
                     break;
                 case '3':

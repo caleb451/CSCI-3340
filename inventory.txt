@@ -1,3 +1,4 @@
-Item---Brand---QTY---Shelf Life(DAYS LEFT)---Price
-Pickles Vlassic 25 4 4.99
-Pickles Dill-Pickles 25 32 3.49
+3003 gloves 10 3.5 safety E1
+3004 helmet 3 24.99 safety E2
+3001 lightbulb 25 2.49 electrical D1
+3002 wire 15 12.99 electrical D3
