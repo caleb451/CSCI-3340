@@ -61,9 +61,53 @@ int main() {
                     cout << "View Inventory" << endl;
                     cout << "------------------------" << endl;
                     inventory.view();
-                    
-                    if (currentUser.privilege == "manager") {
-                        inventory.updateItemInfo(currentUser, inventory);
+                    if (currentUser.privilege == "worker"){
+                        char subChoice;
+                        cout << "\nManager Options:" << endl;
+                        cout << "1. Update Item" << endl;
+                        cout << "Select an option: ";
+                        cin >> subChoice;
+                        if (subChoice == '1')
+                            inventory.editStock(currentUser);
+                        else
+                            goBack();
+                        
+                    }
+                    else if (currentUser.privilege == "manager") {
+                        char subChoice;
+                        do {
+                            cout << "\nManager Options:" << endl;
+                            cout << "1. Update Item" << endl;
+                            cout << "2. Remove Item" << endl;
+                            cout << "3. Add Item" << endl;
+                            cout << "Select an option: ";
+                            cin >> subChoice;
+                
+                            switch (subChoice) {
+                                case '1':
+                                    inventory.updateItemInfo(currentUser, inventory);
+                                    break;
+                                case '2':
+                                    inventory.delSelection();
+                                    break;
+                                case '3': {
+                                    string name, dept, aisle;
+                                    int id, stock;
+                                    double price;
+                                    cout << "Enter item name: "; cin >> name;
+                                    cout << "Enter item ID: "; cin >> id;
+                                    cout << "Enter stock: "; cin >> stock;
+                                    cout << "Enter price: "; cin >> price;
+                                    cout << "Enter department: "; cin >> dept;
+                                    cout << "Enter aisle: "; cin >> aisle;
+                                    inventory.addItem(name, id, price, stock, dept, aisle);
+                                    break;
+                                }
+                                default:
+                                    cout << "Invalid option. Try again.\n";
+                                    break;
+                            }
+                        } while (subChoice != 'b' && subChoice != 'B');
                     }
                     goBack();
                     break;
