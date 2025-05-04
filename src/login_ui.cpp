@@ -14,7 +14,7 @@ string trim(const string& str) {
     size_t end = str.find_last_not_of(" \t\r\n");
     return (start == string::npos || end == string::npos) ? "" : str.substr(start, end - start + 1);
 }
-
+// Function to convert the first character of the line to a privilege string
 string symbolToPrivilege(char symbol) {
     switch (symbol) {
         case '*': return "manager";
