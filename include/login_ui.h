@@ -4,7 +4,9 @@
 #include <string>
 #include "account.h"
 
-void ShowLoginUI(std::string& username, std::string& password, bool& loggedIn, account& currentUser);
-account login(const std::string& username, const std::string& password);
+using namespace std;
+
+void ShowLoginUI(string& username, string& password, bool& loggedIn, account& currentUser);
+account login(const string& username, const string& password);
 
 #endif
