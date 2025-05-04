@@ -1,0 +1,8 @@
+paintbrush,5001,4.25,86,painting,F1
+roller,5002,7.75,64,painting,F2
+primer,5003,8.99,23,painting,F2
+paint,5004,12.99,18,painting,F3
+hammer,5005,9.99,50,tools,A1
+screwdriver,5006,5.49,75,tools,A2
+wrench,5007,8.25,60,tools,A2
+pliers,5008,6.89,40,tools,A3

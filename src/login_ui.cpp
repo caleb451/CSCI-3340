@@ -7,6 +7,7 @@
 #include <algorithm>
 
 using namespace std;
+using namespace ImGui;
 
 string trim(const string& str) {
     size_t start = str.find_first_not_of(" \t\r\n");
@@ -68,13 +69,13 @@ void ShowLoginUI(string& username, string& password, bool& loggedIn, account& cu
     username = username_buf;
     password = password_buf;
 
-    ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
+    Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-    ImGui::Text("Please log in:");
-    ImGui::InputText("Username", username_buf, IM_ARRAYSIZE(username_buf));
-    ImGui::InputText("Password", password_buf, IM_ARRAYSIZE(password_buf), ImGuiInputTextFlags_Password);
+    Text("Please log in:");
+    InputText("Username", username_buf, IM_ARRAYSIZE(username_buf));
+    InputText("Password", password_buf, IM_ARRAYSIZE(password_buf), ImGuiInputTextFlags_Password);
     
-    if (ImGui::Button("Login")) {
+    if (Button("Login")) {
         string privilege;
         if (validate_credentials(username, password, privilege, currentUser)) {
             showError = false;
@@ -84,39 +85,39 @@ void ShowLoginUI(string& username, string& password, bool& loggedIn, account& cu
         }
     }
     if (showError) {
-        ImGui::TextColored(ImVec4(1, 0, 0, 1), "Invalid username or password.");
+        TextColored(ImVec4(1, 0, 0, 1), "Invalid username or password.");
     }
     
 
-    ImGui::Separator();
+    Separator();
 
-    if (ImGui::Button("Continue as Guest")) {
+    if (Button("Continue as Guest")) {
         open_guest_popup = true;
-        ImGui::OpenPopup("Guest Confirmation");
+        OpenPopup("Guest Confirmation");
     }
 
     // Guest confirmation popup
-    if (ImGui::BeginPopupModal("Guest Confirmation", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("Are you sure you want to continue as guest?\n\n");
-        ImGui::Separator();
+    if (BeginPopupModal("Guest Confirmation", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        Text("Are you sure you want to continue as guest?\n\n");
+        Separator();
 
-        if (ImGui::Button("Yes", ImVec2(120, 0))) {
+        if (Button("Yes", ImVec2(120, 0))) {
             currentUser.setUsername("guest");
             currentUser.setPrivilege("guest");
             loggedIn = true;
-            ImGui::CloseCurrentPopup();
+            CloseCurrentPopup();
             open_guest_popup = false;
         }
 
-        ImGui::SameLine();
+        SameLine();
 
-        if (ImGui::Button("No", ImVec2(120, 0))) {
-            ImGui::CloseCurrentPopup();
+        if (Button("No", ImVec2(120, 0))) {
+            CloseCurrentPopup();
             open_guest_popup = false;
         }
 
-        ImGui::EndPopup();
+        EndPopup();
     }
 
-    ImGui::End();
+    End();
 }
