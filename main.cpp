@@ -7,11 +7,11 @@ what we will use to build off of
 #include <string>
 #include <windows.h>
 #include <iomanip>
-#include "systemCheck.h"
-#include "InventorySystem.h"
-#include "login.h"
-#include "addEmp.h"
-#include "account.h"
+#include "include/systemCheck.h"
+#include "include/InventorySystem.h"
+#include "include/login.h"
+#include "include/addEmp.h"
+#include "include/account.h"
 
 using namespace std;
 
