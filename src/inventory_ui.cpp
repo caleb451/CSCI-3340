@@ -94,19 +94,29 @@ void ShowInventoryUI(const account& currentUser, bool& viewingInventory) {
 
     // Manager-only tools
     if (currentUser.getPrivilege() == "manager") {
-        float buttonWidth = 150.0f;
-        float spacing = 20.0f;
-        float totalWidth = (buttonWidth * 2) + spacing;
+        float buttonWidth = 120.0f;
+        float spacing = 10.0f;
+        float totalWidth = (buttonWidth * 4) + (spacing * 3);
         float startX = (GetContentRegionAvail().x - totalWidth) / 2.0f;
-    
         SetCursorPosX(startX);
-        if (Button("Import Inventory", ImVec2(buttonWidth, 0))) {
+
+        if (Button("Import", ImVec2(buttonWidth, 0))) {
             OpenPopup("ImportPopup");
         }
-    
-        SameLine();
-        if (Button("Export Inventory", ImVec2(buttonWidth, 0))) {
+
+        SameLine(0.0f, spacing);
+        if (Button("Export", ImVec2(buttonWidth, 0))) {
             OpenPopup("ExportPopup");
+        }
+
+        SameLine(0.0f, spacing);
+        if (Button("Add", ImVec2(buttonWidth, 0))) {
+            OpenPopup("AddPopup");
+        }
+
+        SameLine(0.0f, spacing);
+        if (Button("Remove", ImVec2(buttonWidth, 0))) {
+            OpenPopup("RemovePopup");
         }
     
         // --- Import Popup ---
@@ -140,6 +150,19 @@ void ShowInventoryUI(const account& currentUser, bool& viewingInventory) {
             if (Button("Close")) CloseCurrentPopup();
             EndPopup();
         }
+
+        if (BeginPopup("AddPopup")) {
+            Text("Add to Inventory - Coming Soon");
+            if (Button("Close")) CloseCurrentPopup();
+            EndPopup();
+        }
+
+        if (BeginPopup("RemovePopup")) {
+            Text("Remove From Inventory - Coming Soon");
+            if (Button("Close")) CloseCurrentPopup();
+            EndPopup();
+        }
+            
     }
 
     EndChild();
