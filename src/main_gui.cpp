@@ -13,6 +13,8 @@ bool loggedIn = false;
 string user, pass;
 account currentUser;
 
+//test for alfredo
+
 int main() {
     // Initialize GLFW
     glfwInit();
