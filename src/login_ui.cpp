@@ -19,38 +19,56 @@ bool validate_credentials(const string& username, const string& password, string
 }
 
 void ShowLoginUI(string& username, string& password, bool& loggedIn, account& currentUser) {
+    static char username_buf[64] = "";
+    static char password_buf[64] = "";
+    static bool open_guest_popup = false;
+    username = username_buf;
+    password = password_buf;
     ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-    static char userBuffer[128] = "";
-    static char passBuffer[128] = "";
-    static string loginError = "";
-
-    ImGui::InputText("Username", userBuffer, IM_ARRAYSIZE(userBuffer));
-    ImGui::InputText("Password", passBuffer, IM_ARRAYSIZE(passBuffer), ImGuiInputTextFlags_Password);
-
+    ImGui::Text("Please log in:");
+    ImGui::InputText("Username", username_buf, IM_ARRAYSIZE(username_buf));
+    ImGui::InputText("Password", password_buf, IM_ARRAYSIZE(password_buf), ImGuiInputTextFlags_Password);
+    
     if (ImGui::Button("Login")) {
-        username = string(userBuffer);
-        password = string(passBuffer);
         string privilege;
-
         if (validate_credentials(username, password, privilege)) {
             currentUser.setUsername(username);
-            currentUser.setPassword(password);
-            currentUser.setName(privilege == "manager" ? "Manager User" : "Worker User");
             currentUser.setPrivilege(privilege);
             loggedIn = true;
-            loginError.clear();
-        } 
-        else {
-            currentUser.setUsername("guest");
-            currentUser.setPrivilege("guest");
-            loggedIn = true;
-            loginError = "Invalid credentials. Proceeding as guest.";
+        } else {
+            ImGui::TextColored(ImVec4(1, 0, 0, 1), "Invalid credentials. Try again or continue as guest.");
         }
     }
 
-    if (!loginError.empty()) {
-        ImGui::TextColored(ImVec4(1, 0.3f, 0.3f, 1), "%s", loginError.c_str());
+    ImGui::Separator();
+
+    if (ImGui::Button("Continue as Guest")) {
+        open_guest_popup = true;
+        ImGui::OpenPopup("Guest Confirmation");
+    }
+
+    // Guest confirmation popup
+    if (ImGui::BeginPopupModal("Guest Confirmation", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("Are you sure you want to continue as guest?\n\n");
+        ImGui::Separator();
+
+        if (ImGui::Button("Yes", ImVec2(120, 0))) {
+            currentUser.setUsername("guest");
+            currentUser.setPrivilege("guest");
+            loggedIn = true;
+            ImGui::CloseCurrentPopup();
+            open_guest_popup = false;
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("No", ImVec2(120, 0))) {
+            ImGui::CloseCurrentPopup();
+            open_guest_popup = false;
+        }
+
+        ImGui::EndPopup();
     }
 
     ImGui::End();

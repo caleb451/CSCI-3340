@@ -14,6 +14,9 @@ void account::displayUsername() { cout << "Username: " << username; }
 void account::displayName() { cout << "Name: " << name; }
 void account::displayPhone() { cout << "Phone number: " << phone; }
 
+string account::getUsername() const {return username;}
+string account::getPrivilege() const {return privilege;}
+
 void account::displayInfo() {
     cout << "\n\n\tAccount information";
     cout << endl << setw(30) << setfill('-') << "-" << setfill(' ');

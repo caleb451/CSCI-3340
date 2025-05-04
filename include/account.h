@@ -5,6 +5,14 @@
 using namespace std;
 
 class account {
+private:
+    string username;
+    string password;
+    string name;
+    string phone;
+    string privilege;
+    int tries;
+
 public:
     void setUsername(string user);
     void setPassword(string pass);
@@ -19,7 +27,6 @@ public:
     void displayPhone();
     void displayInfo();
     void displayWelcome();
-
-    string username, password, name, phone, privilege;
-    int tries;
+    string getUsername() const;
+    string getPrivilege() const;
 };
