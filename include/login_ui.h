@@ -2,7 +2,7 @@
 #define LOGIN_UI_H
 
 #include <string>
-#include "account.h"
+#include "account_ui.h"
 
 using namespace std;
 

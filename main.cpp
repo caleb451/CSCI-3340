@@ -47,7 +47,7 @@ int main() {
                         cout << "Logging out...\n";
                         Sleep(1000);
                         currentUser = account{}; // Reset to guest
-                        currentUser.setPrivilege("guest"); // explicitly mark as guest
+                        currentUser.privilege = "guest"; // explicitly mark as guest
                     } 
                     else {
                         currentUser = login();

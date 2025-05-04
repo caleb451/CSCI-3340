@@ -21,7 +21,7 @@ char menu(account& currentUser){
         cout << "Welcome " << currentUser.name << endl;
     }
     else
-        currentUser.setPrivilege("guest");
+        currentUser.privilege = "guest";
     cout << "Logged In As: " << currentUser.privilege << endl;
     if(currentUser.privilege == "guest")
         cout << setw(20) << left << "1. Login" << endl;

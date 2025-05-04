@@ -29,22 +29,24 @@ account addinfo(string empInfo) {
     
     switch(x){
         case '*':
-            employee.setPrivilege("manager");
+            employee.privilege = "manager";
             break;
         case '-':
-            employee.setPrivilege("worker");
+            employee.privilege = "worker";
             break;
         case '+':
-            employee.setPrivilege("costumer");
+            employee.privilege = "costumer";
             break;
         default:
-            employee.setPrivilege("guest");
-            currentUser.setPrivilege("guest");
+            employee.privilege = "guest";
+            currentUser.privilege = "guest";
     }
-    employee.setUsername(info[1]);
-    employee.setPassword(info[2]);
-    employee.setName(info[3] + ' ' + info[4]);
-    employee.setPhone(info[5]);
+    employee.privilege = "manager";
+    employee.username = info[1];
+    employee.password = info[2];
+    employee.name = info[3] + ' ' + info[4];
+    employee.phone = info[5];
+
 	return employee;
 }
 
