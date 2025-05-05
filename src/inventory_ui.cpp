@@ -8,6 +8,29 @@
 using namespace std;
 using namespace ImGui;
 
+void exportInventoryToFile(const vector<vector<string>>& data, const string& filename) {
+    ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        cerr << "Failed to open export file.\n";
+        return;
+    }
+
+    // Write header row
+    outFile << "Name,ID,Price,Stock,Department,Aisle\n";
+
+    // Write each row
+    for (const auto& row : data) {
+        for (size_t i = 0; i < row.size(); ++i) {
+            outFile << row[i];
+            if (i != row.size() - 1)
+                outFile << ",";
+        }
+        outFile << "\n";
+    }
+
+    outFile.close();
+}
+
 void loadInventoryFromFile(vector<vector<string>>& data, const string& filename) {
     ifstream file(filename);
     string line;
@@ -146,11 +169,25 @@ void ShowInventoryUI(const account& currentUser, bool& viewingInventory) {
     
         // --- Export Popup ---
         if (BeginPopup("ExportPopup")) {
-            Text("Export Inventory - Coming Soon");
-            if (Button("Close")) CloseCurrentPopup();
+            static std::string exportMessage;
+        
+            if (Button("Export Now")) {
+                exportInventoryToFile(inventory, "inventory_export.txt");
+                exportMessage = "Exported to inventory_export.txt";
+            }
+        
+            if (!exportMessage.empty()) {
+                TextWrapped("%s", exportMessage.c_str());
+            }
+        
+            if (Button("Close")) {
+                exportMessage.clear();
+                CloseCurrentPopup();
+            }
+        
             EndPopup();
         }
-
+        
         if (BeginPopup("AddPopup")) {
             Text("Add to Inventory - Coming Soon");
             if (Button("Close")) CloseCurrentPopup();
