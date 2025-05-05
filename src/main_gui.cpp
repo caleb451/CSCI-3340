@@ -50,7 +50,7 @@ int main() {
         else {
             Begin("Inventory System", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
-            SeparatorText("------------------------ [STORE NAME] ------------------------");
+            SeparatorText("------------------------ [Inventory System] ------------------------");
             Text("Logged In As: %s", currentUser.getPrivilege().c_str());
             Spacing();
 

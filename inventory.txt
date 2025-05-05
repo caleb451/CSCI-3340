@@ -38,3 +38,4 @@ Area Rug (5x7),ID077,29.99,10,Home Goods,11
 Table Lamp,ID078,15.99,12,Home Goods,11
 Wall Clock,ID079,12.99,18,Home Goods,11
 Picture Frame (8x10),ID080,4.99,25,Home Goods,11
+Table,784,10.99,10,Home,10
