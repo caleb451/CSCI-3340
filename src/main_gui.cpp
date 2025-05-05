@@ -7,6 +7,7 @@
 #include "login_ui.h"
 #include "account_ui.h"
 #include "inventory_ui.h"
+#include <fstream>
 
 using namespace std;
 using namespace ImGui;
@@ -15,6 +16,7 @@ bool loggedIn = false;
 string user, pass;
 account currentUser;
 bool viewingInventory = false;
+static bool openCreateAccountPopup = false;
 
 int main() {
     // Initialize GLFW
@@ -66,7 +68,7 @@ int main() {
                 }
 
                 if (Button("3. Create New Account")) {
-                    OpenPopup("CreateAccountPopup");
+                    openCreateAccountPopup = true;
                 }
             }
             else {
@@ -84,43 +86,56 @@ int main() {
 
             End();
 
-            if (BeginPopup("CreateAccountPopup")) {
-                Text("Create Account - Coming Soon");
-                if (Button("Close")) CloseCurrentPopup();
-                EndPopup();
-            }
+            if (BeginPopupModal("CreateAccountPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 
-            if (BeginPopup("ImportPopup")) {
-                if (currentUser.getPrivilege() == "manager") {
-                    static char filename[128] = "new_inventory.txt";
-                    static string importMessage;
-
-                    InputText("Filename", filename, IM_ARRAYSIZE(filename));
-
-                    if (Button("Import")) {
-                        importInventoryFromFile(filename, importMessage);
+                static char fname[64] = "";
+                static char lname[64] = "";
+                static char username[64] = "";
+                static char password[64] = "";
+                static char phone[32] = "";
+                static int privilegeIndex = 1; // 0=manager, 1=worker, 2=guest, 3=customer
+                static std::string createMessage;
+            
+                const char* privileges[] = { "manager", "worker", "guest", "customer" };
+                const char symbols[]     = { '*',        '+',      '_',     '-'        };
+            
+                InputText("First Name", fname, IM_ARRAYSIZE(fname));
+                InputText("Last Name", lname, IM_ARRAYSIZE(lname));
+                InputText("Username", username, IM_ARRAYSIZE(username));
+                InputText("Password", password, IM_ARRAYSIZE(password));
+                InputText("Phone", phone, IM_ARRAYSIZE(phone));
+                Combo("Privilege", &privilegeIndex, privileges, IM_ARRAYSIZE(privileges));
+            
+                if (Button("Create Account")) {
+                    ofstream file("accountInformation.txt", ios::app);
+                    if (file) {
+                        file << symbols[privilegeIndex] << " "
+                             << username << " "
+                             << password << " "
+                             << fname << " "
+                             << lname << " "
+                             << phone << "\n";
+                        file.close();
+                        createMessage = "Account created!";
+                    } else {
+                        createMessage = "Error: Could not write to file.";
                     }
-
-                    if (!importMessage.empty()) {
-                        TextWrapped("%s", importMessage.c_str());
-                    }
-
-                    if (Button("Close")) {
-                        importMessage.clear();
-                        CloseCurrentPopup();
-                    }
-                } else {
-                    Text("Access denied: Only managers can import inventory.");
-                    if (Button("Close")) CloseCurrentPopup();
                 }
+            
+                if (!createMessage.empty()) {
+                    TextWrapped("%s", createMessage.c_str());
+                }
+            
+                if (Button("Close")) {
+                    fname[0] = lname[0] = username[0] = password[0] = phone[0] = '\0';
+                    privilegeIndex = 1;
+                    createMessage.clear();
+                    CloseCurrentPopup();
+                }
+            
                 EndPopup();
             }
-
-            if (BeginPopup("ExportPopup")) {
-                Text("Export Inventory - Coming Soon");
-                if (Button("Close")) CloseCurrentPopup();
-                EndPopup();
-            }
+            
         }
 
 
@@ -132,6 +147,11 @@ int main() {
         if (BeginPopupModal("InventoryPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
             ShowInventoryUI(currentUser, viewingInventory);
             EndPopup();
+        }
+
+        if (openCreateAccountPopup) {
+            OpenPopup("CreateAccountPopup");
+            openCreateAccountPopup = false;
         }
 
         // Render everything

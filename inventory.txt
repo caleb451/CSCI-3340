@@ -1,8 +1,40 @@
-paintbrush,5001,4.25,86,painting,F1
-roller,5002,7.75,64,painting,F2
-primer,5003,8.99,23,painting,F2
-paint,5004,12.99,18,painting,F3
-hammer,5005,9.99,50,tools,A1
-screwdriver,5006,5.49,75,tools,A2
-wrench,5007,8.25,60,tools,A2
-pliers,5008,6.89,40,tools,A3
+Hammer,ID001,9.99,50,Hardware,3
+Screwdriver Set,ID002,14.99,30,Hardware,3
+Adjustable Wrench,ID003,11.49,25,Hardware,4
+Power Drill,ID004,59.99,15,Hardware,6
+Nails (100-pack),ID005,3.49,200,Hardware,5
+Tape Measure,ID006,7.99,40,Hardware,3
+Pliers,ID007,6.99,35,Hardware,4
+Safety Glasses,ID008,4.99,60,Hardware,2
+Tool Box,ID009,24.99,20,Hardware,1
+Level,ID010,8.49,30,Hardware,4
+All-Purpose Cleaner,ID011,5.99,50,Cleaning,7
+Disinfectant Wipes,ID012,4.49,45,Cleaning,7
+Glass Cleaner,ID013,3.99,30,Cleaning,7
+Paper Towels,ID014,6.99,60,Cleaning,8
+Sponges (6-pack),ID015,2.99,80,Cleaning,7
+Toilet Bowl Cleaner,ID016,3.49,40,Cleaning,9
+Mop,ID017,12.99,25,Cleaning,8
+Broom,ID018,9.99,20,Cleaning,8
+Trash Bags (50-pack),ID019,7.99,70,Cleaning,8
+Rubber Gloves (Medium),ID020,2.99,100,Cleaning,7
+Milk (1 gal),ID021,3.29,100,Grocery,12
+Bread (White),ID022,1.99,75,Grocery,13
+Eggs (Dozen),ID023,2.49,90,Grocery,12
+Apples (Bag),ID024,3.99,60,Grocery,14
+Peanut Butter,ID025,2.99,40,Grocery,13
+Cereal (Box),ID026,4.49,50,Grocery,13
+Coffee (Ground),ID027,5.99,45,Grocery,15
+Bottled Water (24-pack),ID028,3.99,80,Grocery,10
+Orange Juice,ID029,3.49,55,Grocery,12
+Pasta (1 lb),ID030,1.29,100,Grocery,13
+USB Cable (1m),ID031,3.99,150,Electronics,20
+Mouse (Wireless),ID032,14.99,40,Electronics,20
+Keyboard,ID033,24.99,30,Electronics,20
+Bluetooth Speaker,ID034,39.99,20,Electronics,21
+Phone Charger,ID035,9.99,60,Electronics,20
+HDMI Cable,ID036,7.99,45,Electronics,20
+Power Strip,ID037,11.99,35,Electronics,20
+LED Desk Lamp,ID038,19.99,25,Electronics,21
+AA Batteries (8-pack),ID039,4.49,100,Electronics,20
+Flash Drive (32GB),ID040,8.99,70,Electronics,21
