@@ -1,4 +1,3 @@
-Shampoo (12oz),ID041,4.99,60,Personal Care,16
 Conditioner (12oz),ID042,4.99,60,Personal Care,16
 Toothpaste,ID043,2.99,80,Personal Care,16
 Toothbrush (2-pack),ID044,3.49,70,Personal Care,16

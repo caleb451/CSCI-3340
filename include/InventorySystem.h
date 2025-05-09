@@ -1,16 +1,3 @@
-/*
-Dev: Jay
-Program: System in charge of handling the storage of items in the inventory and related functions
-*/
-
-// To Be Implemented
-/*
-Confirmation for Item deletion
-Display list of items for deletion?
-More work on Edit function
-Import data function
-Export data function
-*/
 #include "account.h"
 #include <iostream>
 #include <string>

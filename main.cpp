@@ -63,7 +63,7 @@ int main() {
                     inventory.view();
                     if (currentUser.privilege == "worker"){
                         char subChoice;
-                        cout << "\nManager Options:" << endl;
+                        cout << "\nEmployee Options:" << endl;
                         cout << "1. Update Item" << endl;
                         cout << "Select an option: ";
                         cin >> subChoice;

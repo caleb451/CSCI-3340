@@ -2,20 +2,19 @@
 #include <string>
 #include <vector>
 #include <iomanip>
-#include <conio.h> // For _getch()
+#include <conio.h>
 #include "account.h"
 #include "addAcc.h"
 
 using namespace std;
 
 
-// Function to mask password input
 string getHiddenPassword() {
     string password;
     char ch;
 
-    while ((ch = _getch()) != '\r') { // Enter key ends input
-        if (ch == '\b') { // Backspace
+    while ((ch = _getch()) != '\r') {
+        if (ch == '\b') {
             if (!password.empty()) {
                 cout << "\b \b";
                 password.pop_back();

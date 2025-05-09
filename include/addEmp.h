@@ -13,8 +13,8 @@ void createAccount() {
     cin >> role;
 
     if (role == "manager") privilegeMarker = '*';
-    else if (role == "worker") privilegeMarker = '-';
-    else privilegeMarker = '+';
+    else if (role == "worker") privilegeMarker = '+';
+    else privilegeMarker = '-';
 
     cout << "Enter username: ";
     cin >> username;
